@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">List1110</string>
+    <string name="preference_key_faculty_list">List1110_list</string>
+</resources>
