@@ -1,13 +1,16 @@
 package com.example.list10.fragments
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.list1110.data.Group
+import com.example.list1110.myConsts.TAG
 import com.example.list1110.repository.AppRepository
 import java.text.FieldPosition
 import java.util.Date
 
 class GroupViewModel : ViewModel() {
+
     var groupList : MutableLiveData<List<Group>> = MutableLiveData()
     private var _group: Group? = null
     val group
@@ -17,14 +20,16 @@ class GroupViewModel : ViewModel() {
         AppRepository.getInstance().listOfGroup.observeForever{
             groupList.postValue(AppRepository.getInstance().facultyGroups)
         }
+
         AppRepository.getInstance().group.observeForever{
             _group=it
+            Log.d(TAG, "GroupViewModel Текущая группа $it")
         }
+
         AppRepository.getInstance().faculty.observeForever{
             groupList.postValue(AppRepository.getInstance().facultyGroups)
         }
     }
-
     fun deleteGroup(){
         if (group!=null)
             AppRepository.getInstance().deleteGroup(group!!)
@@ -33,8 +38,8 @@ class GroupViewModel : ViewModel() {
     fun appendGroup(groupName: String){
         val group= Group()
         group.name =groupName
-        group.facultyID=faculty?.id
-        AppRepository.getInstance().updateGroup(group)
+        group.facultyID= faculty?.id!!
+        AppRepository.getInstance().addGroup(group)
     }
 
     fun updateGroup(groupName: String){
@@ -53,9 +58,10 @@ class GroupViewModel : ViewModel() {
         AppRepository.getInstance().setCurrentGroup(group)
     }
 
+    val getGroupListPosition
+        get() = groupList.value?.indexOfFirst { it.id==group?.id } ?:-1
+
+
     val faculty
         get() = AppRepository.getInstance().faculty.value
-
-    val groupListPosition
-        get() = groupList.value?.indexOfFirst { it.id==group?.id } ?:-1
 }

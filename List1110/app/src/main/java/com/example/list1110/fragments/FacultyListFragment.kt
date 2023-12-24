@@ -50,7 +50,7 @@ class FacultyListFragment : Fragment(), MainActivity.Edit {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(FacultyListViewModel::class.java)
         viewModel.facultyList.observe(viewLifecycleOwner){
-            binding.rvFaculty.adapter=FacultyListAdapter(it.items)
+            binding.rvFaculty.adapter=FacultyListAdapter(it)
         }
     }
 

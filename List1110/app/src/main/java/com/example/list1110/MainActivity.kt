@@ -9,6 +9,7 @@ import androidx.activity.addCallback
 import com.example.list1110.data.Student
 import com.example.list1110.fragments.FacultyListFragment
 import com.example.list1110.fragments.GroupFragment
+import com.example.list1110.fragments.StudentFragment
 import com.example.list1110.interfaces.MainActivityInterface
 import com.example.list1110.repository.AppRepository
 
@@ -125,12 +126,16 @@ class MainActivity : AppCompatActivity() ,MainActivityInterface{
             NameOfFragment.GROUP ->{
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fcMain,GroupFragment.getInstance())
+                    .replace(R.id.fcMain,GroupFragment.newInstance())
                     .addToBackStack(null)
                     .commit()
             }
             NameOfFragment.STUDENT ->{
-
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fcMain, StudentFragment.newInstance(student!!))
+                    .addToBackStack(null)
+                    .commit()
             }
         }
         activeFragment=fragmentType

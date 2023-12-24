@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.list10.fragments.GroupViewModel
 import com.example.list1110.MainActivity
 import com.example.list1110.R
 import com.example.list1110.data.Group
+import com.example.list1110.data.Student
 import com.example.list1110.databinding.FragmentGroupBinding
+import com.example.list1110.databinding.FragmentStudentsBinding
 import com.example.list1110.interfaces.MainActivityInterface
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,6 +43,7 @@ class GroupFragment : Fragment(), MainActivity.Edit {
     private var tabPosition: Int = 0
     private lateinit var _binding: FragmentGroupBinding
     private val binding get() = _binding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,8 +90,8 @@ class GroupFragment : Fragment(), MainActivity.Edit {
         }.attach()
         tabPosition = 0
         if (viewModel.group != null)
-            tabPosition = if (viewModel.groupListPosition >= 0)
-                viewModel.groupListPosition
+            tabPosition = if (viewModel.getGroupListPosition >= 0)
+                viewModel.getGroupListPosition
             else
                 0
         viewModel.setCurrentGroup(tabPosition)
@@ -156,10 +160,5 @@ class GroupFragment : Fragment(), MainActivity.Edit {
             .create()
             .show()
     }
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
-        // TODO: Use the ViewModel
-    }*/
 
 }

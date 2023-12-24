@@ -1,21 +1,34 @@
 package com.example.list1110.fragments
 
+import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.list1110.MainActivity
+import com.example.list1110.NameOfFragment
 import com.example.list1110.R
 import com.example.list1110.data.Group
 import com.example.list1110.data.Student
 import com.example.list1110.databinding.FragmentStudentsBinding
+import com.example.list1110.interfaces.MainActivityInterface
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class StudentsFragment : Fragment() {
 
@@ -42,12 +55,16 @@ class StudentsFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(StudentsViewModel::class.java)
-        viewModel.setGroup(group)
+        viewModel.set_Group(group)
         viewModel.studentList.observe(viewLifecycleOwner) {
             binding.rvStudents.adapter = StudentAdapter(it)
+        }
+        binding.fAdd.setOnClickListener {
+            editStudent(Student().apply {groupID = viewModel.group!!.id })
         }
     }
 
@@ -64,13 +81,12 @@ class StudentsFragment : Fragment() {
             .show()
 
     }
-
-    private fun editStudent(facultyName: String = "") {
-        TODO("Здесь вызов фрагмента ввода студента")
+    private fun editStudent(student: Student) {
+        (requireActivity() as MainActivityInterface).showFragment(NameOfFragment.STUDENT,student)
+        (requireActivity() as MainActivityInterface).updateTitle("Группа ${viewModel.group!!.name}")
     }
-
-    private inner class StudentAdapter(private val items: List<Student>) :
-        RecyclerView.Adapter<StudentAdapter.ItemHolder>() {
+    private inner class StudentAdapter(private val items: List<Student>)
+        : RecyclerView.Adapter<StudentAdapter.ItemHolder>() {
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -87,6 +103,15 @@ class StudentsFragment : Fragment() {
 
         private var lastView: View? = null
         private fun updateCurrentView(view: View) {
+
+            val ll = lastView?.findViewById<LinearLayout>(R.id.clStudentButtons)
+            ll?.visibility=View.INVISIBLE
+            ll?.layoutParams=ll?.layoutParams.apply { this?.width=1 }
+
+            val ib = lastView?.findViewById<ImageButton>(R.id.ibPhone)
+            ib?.visibility=View.INVISIBLE
+            ib?.layoutParams=ib?.layoutParams.apply { this?.width=1 }
+
             lastView?.findViewById<ConstraintLayout>(R.id.clFaculty)?.setBackgroundColor(
                 ContextCompat.getColor(requireContext(), R.color.white)
             )
@@ -102,11 +127,59 @@ class StudentsFragment : Fragment() {
                 this.student = student
                 if (student == viewModel.student)
                     updateCurrentView(itemView)
-                val tv = itemView.findViewById<TextView>(R.id.tvFaculty)
+
+                val tv = itemView.findViewById<TextView>(R.id.tvStudentName)
                 tv.text = student.shortName
-                tv.setOnClickListener {
+
+                val cl=itemView.findViewById<ConstraintLayout>(R.id.clStudent)
+                cl.setOnClickListener {
                     viewModel.setCurrentStudent(student)
-                    updateCurrentView((itemView))
+                    updateCurrentView(itemView)
+                }
+
+                itemView.findViewById<ImageButton>(R.id.ibEditStudent).setOnClickListener {
+                    editStudent(student)
+                }
+
+                itemView.findViewById<ImageButton>(R.id.ibDeleteStudent).setOnClickListener {
+                    deleteDialog()
+                }
+
+                val llb=itemView.findViewById<LinearLayout>(R.id.clStudentButtons)
+                llb.visibility=View.INVISIBLE
+                llb?.layoutParams=llb?.layoutParams.apply { this?.width=1 }
+                val ib=itemView.findViewById<ImageButton>(R.id.tvPhone)
+                ib.visibility = View.INVISIBLE
+                cl.setOnLongClickListener {
+                    cl.callOnClick()
+                    llb.visibility=View.VISIBLE
+                    if (student.phone.isNotBlank())
+                        ib.visibility = View.VISIBLE
+                    MainScope().
+                    launch {
+                        val lp = llb?.layoutParams
+                        lp?.width = 1
+                        val ip = ib.layoutParams
+                        ip.width = 1
+                        while(lp?.width!!<350){
+                            lp?.width = lp?.width!!+35
+                            llb?.layoutParams=lp
+                            ip.width=ip.width+10
+                            if (ib.visibility == View.VISIBLE)
+                                ib.layoutParams=ip
+                            delay(50)
+                        }
+                    }
+                    true
+                }
+                itemView.findViewById<ImageButton>(R.id.tvPhone).setOnClickListener {
+                    if (ContextCompat.checkSelfPermission(requireContext(),
+                            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+                        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${student.phone}"))
+                        startActivity(intent)
+                    } else {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE),2)
+                    }
                 }
             }
         }

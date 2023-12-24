@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.StudentFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="111dp"
+            android:layout_height="47dp"
+            android:text="Отмена"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.54"
+            app:layout_constraintStart_toEndOf="@+id/btnSave"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.312" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:text="Cохранить"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.319" />
+
+        <LinearLayout
+            android:layout_width="412dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="500dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-1dp">
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="74dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Телефон" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Введите значение" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="409dp"
+            android:layout_height="260dp"
+            android:layout_marginTop="230dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvDateBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Дата рождения" />
+
+            <CalendarView
+                android:id="@+id/cvBirthDate"
+                android:layout_width="231dp"
+                android:layout_height="257dp"
+                tools:layout_editor_absoluteX="164dp"
+                tools:layout_editor_absoluteY="265dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="404dp"
+            android:layout_height="47dp"
+            android:layout_marginBottom="96dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tvSex"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Пол" />
+
+            <Spinner
+                android:id="@+id/spSex"
+                android:layout_width="160dp"
+                android:layout_height="30dp"
+                tools:layout_editor_absoluteX="225dp"
+                tools:layout_editor_absoluteY="542dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="410dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="94dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="1dp">
+
+            <TextView
+                android:id="@+id/tvMiddleName"
+                android:layout_width="111dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:text="Отчество" />
+
+            <EditText
+                android:id="@+id/etLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Введите значение" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="411dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="48dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="108dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Имя" />
+
+            <EditText
+                android:id="@+id/etMiddleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Введите значение" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LL"
+            android:layout_width="411dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="1dp">
+
+            <TextView
+                android:id="@+id/tvFirstName"
+                android:layout_width="107dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:text="Фамилия" />
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Введите значение" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
